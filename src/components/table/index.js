@@ -10,6 +10,7 @@ import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
 import ColumnTitle from "../columnTitle";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const options = {
   scales: {
@@ -102,8 +103,8 @@ function Table() {
             status === 0
               ? [5, 2, 3, 12, 19, 3]
               : status === 1
-              ? [1, 8, 13, 1, 2, 9]
-              : [12, 19, 3, 5, 2, 3],
+                ? [1, 8, 13, 1, 2, 9]
+                : [12, 19, 3, 5, 2, 3],
           backgroundColor: "white",
           borderColor: status === 0 ? "#76c26a" : "#f02556",
         },
@@ -113,6 +114,9 @@ function Table() {
 
   return (
     <Container className={classes.root}>
+      <Link to="/analysis">
+        Анализ данных
+      </Link>
       <h2>Маршруты</h2>
       {orders && (
         <div className={classes.table}>

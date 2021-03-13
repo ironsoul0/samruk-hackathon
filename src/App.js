@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import About from "./components/about";
 import Header from "./components/header";
 import Table from "./components/table";
+import Dashboard from "./components/dashboard";
+import Analysis from "./components/analysis";
 
 function App() {
   return (
@@ -14,6 +16,12 @@ function App() {
       </Route>
       <Route exact path="/about">
         <About />
+      </Route>
+      <Route exact path="/chart/:date/:from/:to">
+        <Dashboard />
+      </Route>
+      <Route exact path="/analysis">
+        <Analysis />
       </Route>
     </Router>
   );
