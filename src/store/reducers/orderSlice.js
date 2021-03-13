@@ -68,6 +68,10 @@ export const initFetch = () => (dispatch) => {
   }, 500);
 };
 
+export const addFetch = () => (dispatch) => {
+  dispatch(setOrders([...mockOrders, ...mockOrders]));
+};
+
 export const nextOrdersAsync = () => (dispatch, getState) => {
   dispatch(nextOrders());
   const { order } = getState();

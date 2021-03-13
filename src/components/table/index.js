@@ -1,15 +1,13 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { Line } from "@reactchartjs/react-chart.js";
 
 import { initFetch } from "../../store/reducers/orderSlice";
+import { config } from "../../utils";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
-
-const statusClass = [classes.perfect, classes.trouble, classes.trouble];
-const statusText = ["Норма", "Нехватка", "Избыток"];
 
 const options = {
   scales: {
@@ -51,12 +49,19 @@ const LineChart = ({ data }) => (
 );
 
 function Table() {
+  const routesRef = useRef([]);
   const { orders } = useSelector((state) => state.order);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(initFetch());
-  }, []);
+  }, [dispatch]);
+
+  useLayoutEffect(() => {
+    routesRef.current.forEach((routeRef, i) => {
+      config.sr.reveal(routeRef, config.srConfig(i * 10));
+    });
+  }, [routesRef, orders]);
 
   const getData = useCallback((status) => {
     return {
@@ -98,10 +103,11 @@ function Table() {
               <p>Состояние</p>
             </div>
           </div>
-          {orders.map((current) => (
+          {orders.map((current, i) => (
             <div
-              key={current.id}
+              key={i}
               className={clsx(classes.row, classes.secondaryRow)}
+              ref={(el) => (routesRef.current[i] = el)}
             >
               <div>
                 <p>{current.id}</p>
