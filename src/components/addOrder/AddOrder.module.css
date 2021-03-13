@@ -1,0 +1,48 @@
+.modal {
+  position: absolute;
+  top: 180px;
+  left: 350px;
+  right: 350px;
+  bottom: 210px;
+  outline: none;
+  background-color: #eee;
+  border-radius: 5px;
+  padding: 20px 30px;
+}
+
+.form input {
+  width: 100%;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  outline: none;
+  padding: 12px 0px;
+  padding-left: 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.form button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: white;
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .modal {
+    top: 50px;
+    left: 50px;
+    right: 50px;
+    bottom: 50px;
+  }
+}

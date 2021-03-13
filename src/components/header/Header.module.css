@@ -1,0 +1,110 @@
+.root {
+  border-bottom: 1px #eee solid;
+  width: 100%;
+  background-color: #ffffff;
+  z-index: 100;
+}
+
+.content {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.links :not(:last-of-type) {
+  margin-right: 12px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+}
+
+.links a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 32px;
+}
+
+.links a:hover {
+  opacity: 0.7;
+}
+
+.burger {
+  display: none;
+  cursor: pointer;
+}
+
+.burger div {
+  width: 24px;
+  height: 2px;
+  background-color: #000;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.burger div:not(:last-of-type) {
+  margin-bottom: 4px;
+}
+
+.root.active .burger div:first-child {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.root.active .burger div:nth-child(2) {
+  opacity: 0;
+}
+
+.root.active .burger div:last-child {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+
+  .links {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background-color: #ffffff;
+    top: 0;
+    padding-top: 15px;
+    margin-top: 56px;
+    padding-bottom: 15px;
+    align-items: stretch;
+    text-align: right;
+    transform: scaleY(0);
+    transform-origin: top;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-bottom: 1px #eee solid;
+  }
+
+  .root.active .links {
+    transform: none;
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .links a {
+    margin-right: 25px;
+  }
+
+  .links :not(:last-of-type) {
+    margin-right: 25px;
+  }
+}
