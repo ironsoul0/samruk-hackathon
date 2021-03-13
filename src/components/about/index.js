@@ -22,7 +22,7 @@ function index() {
           <a
             rel="noopener noreferrer"
             target="_blank"
-            href="https://github.com/ironsoul0/globerce"
+            href="https://github.com/ironsoul0/samruk-hackathon"
           >
             GitHub
           </a>

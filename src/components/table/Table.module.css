@@ -13,13 +13,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 700px;
+  min-width: 720px;
   padding: 0px 20px;
   margin-left: -30px;
 }
 
 .mainRow {
   font-weight: bold;
+}
+
+.separator {
+  height: 2px;
+  background-color: black;
+  width: 100%;
 }
 
 .secondaryRow {
@@ -117,6 +123,12 @@
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .row div:nth-child(3) {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .table {
     overflow-x: scroll;
@@ -124,10 +136,6 @@
 
   .secondaryRow:hover {
     background: none;
-  }
-
-  .row div:nth-child(3) {
-    display: none;
   }
 
   .row div:last-of-type {

@@ -8,6 +8,7 @@ import { config } from "../../utils";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
+import ColumnTitle from "../columnTitle";
 
 const options = {
   scales: {
@@ -99,6 +100,7 @@ function Table() {
             <div>
               <p>Прибытие</p>
             </div>
+            <ColumnTitle title="Вагоны" />
             <div>
               <p>Состояние</p>
             </div>
@@ -123,6 +125,7 @@ function Table() {
                 <p>{current.arrival.point}</p>
                 <p>{current.arrival.time}</p>
               </div>
+              <div>3</div>
               <div>
                 <LineChart data={getData(current.status)} />
               </div>
