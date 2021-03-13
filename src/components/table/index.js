@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
 import { Line } from "@reactchartjs/react-chart.js";
@@ -57,11 +57,11 @@ function Table() {
     dispatch(initFetch());
   }, [dispatch]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     routesRef.current.forEach((routeRef, i) => {
       config.sr.reveal(routeRef, config.srConfig(i * 10));
     });
-  }, [routesRef, orders]);
+  }, [orders]);
 
   const getData = useCallback((status) => {
     return {
