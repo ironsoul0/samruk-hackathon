@@ -38,16 +38,16 @@
   background-color: white;
 }
 
-.row div {
+.row > div {
   flex: 1;
   padding: 0 10px;
 }
 
-.row div:last-of-type {
+.row > div:last-of-type {
   max-width: 100px;
 }
 
-.row div:first-of-type {
+.row > div:first-of-type {
   flex: 0.6;
 }
 
@@ -92,24 +92,6 @@
   transition: opacity 0.2s ease-in-out;
   cursor: pointer;
   outline: none;
-}
-
-.form .button:nth-child(3) {
-  margin-left: 15px;
-}
-
-.button:hover {
-  opacity: 1;
-}
-
-.form {
-  margin: 33px 0;
-}
-
-.control {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
 }
 
 @keyframes fadeDown {

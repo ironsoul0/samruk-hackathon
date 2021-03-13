@@ -1,5 +1,6 @@
 import React from "react";
 
+import clsx from "clsx";
 import { useHover } from "../../hooks";
 import { InfoIcon } from "../icons";
 import styles from "./ColumnTitle.module.css";
@@ -13,12 +14,11 @@ const ColumnTitle = ({ title, tooltipText }) => {
       <span ref={hoverRef}>
         <InfoIcon className={styles.icon} />
       </span>
-      {isHovered && false && (
-        <div className={styles.tooltipMy}>
-          Здесь полезная <br />
-          информация
-        </div>
-      )}
+      <div
+        className={clsx([styles.tooltipMy, isHovered && styles.tooltipShown])}
+      >
+        We love Krauch
+      </div>
     </div>
   );
 };
