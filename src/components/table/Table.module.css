@@ -5,9 +5,10 @@
 .row {
   display: flex;
   justify-content: space-between;
-  min-width: 550px;
+  align-items: center;
+  min-width: 700px;
   padding: 0px 20px;
-  margin-left: -25px;
+  margin-left: -30px;
 }
 
 .mainRow {
@@ -21,16 +22,38 @@
 }
 
 .secondaryRow:hover {
-  background-color: #eee;
+  background-color: white;
 }
 
-.row p {
+.row div {
   flex: 1;
   padding: 0 10px;
 }
 
-.row p:last-of-type {
-  flex: 0.5;
+.row div:last-of-type {
+  max-width: 100px;
+}
+
+.row div:first-of-type {
+  flex: 0.6;
+}
+
+.timing p:first-of-type {
+  margin-bottom: 5px;
+}
+
+.timing p:last-of-type {
+  margin-top: 0px;
+}
+
+.perfect {
+  color: #76c26a;
+  font-weight: bold;
+}
+
+.trouble {
+  color: #f02556;
+  font-weight: bold;
 }
 
 .form input {
@@ -83,5 +106,13 @@
 
   .secondaryRow:hover {
     background: none;
+  }
+
+  .row div:nth-child(3) {
+    display: none;
+  }
+
+  .row div:last-of-type {
+    max-width: 80px;
   }
 }

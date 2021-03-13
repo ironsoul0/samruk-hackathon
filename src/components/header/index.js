@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
 
+import Logo from "../logo";
 import Container from "../container";
 import classes from "./Header.module.css";
 
@@ -23,10 +24,12 @@ const Header = () => {
     <nav className={clsx(classes.root, { [classes.active]: menu })}>
       <Container className={classes.content}>
         <div className={classes.logo}>
-          <Link to="/">Globerce Capital</Link>
+          <a href="/">
+            <Logo />
+          </a>
         </div>
         <div className={classes.links}>
-          {links.map((el, i) => (
+          {links.map((el) => (
             <Link onClick={() => setMenu(false)} to={el.href} key={el.href}>
               {el.label}
             </Link>

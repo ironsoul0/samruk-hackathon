@@ -1,5 +1,5 @@
 <h1 align="center">
-  Globerce Capital Test
+  Samruk Hackathon
 </h1>
 <p align="center">
    Built with <a href="https://redux-toolkit.js.org/" target="_blank">Redux Toolkit</a> and hosted with <a href="https://www.netlify.com/" target="_blank">Netlify</a>
@@ -10,20 +10,18 @@
   </a>
 </p>
 
-![demo](./src/images/screen.png)
-
 ## 💻 Wanna run on your machine?
 
 1. Clone the project
 
    ```sh
-   git clone https://github.com/ironsoul0/globerce.git
+   git clone https://github.com/ironsoul0/samruk-hackathon
    ```
 
 1. Install the dependencies
 
    ```sh
-   cd globerce
+   cd samruk-hackathon
    npm install
    ```
 
