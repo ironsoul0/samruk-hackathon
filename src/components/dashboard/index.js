@@ -23,9 +23,11 @@ const options = {
 };
 const optionsClass = {
   scales: {
-    xAxes: [{
-      barThickness: 73
-    }],
+    xAxes: [
+      {
+        barThickness: 73,
+      },
+    ],
     yAxes: [
       {
         ticks: {
@@ -38,15 +40,15 @@ const optionsClass = {
 
 const transform = (raw, optionsSet) => {
   const capacities = {
-    '2К': 36,
-    '3П': 54,
-    '2Д': 18,
-    '2С': 36,
-    '2Л': 6,
-    '1Д': 12,
-    '1Л': 10,
-    '3О': 81
-  }
+    "2К": 36,
+    "3П": 54,
+    "2Д": 18,
+    "2С": 36,
+    "2Л": 6,
+    "1Д": 12,
+    "1Л": 10,
+    "3О": 81,
+  };
   let obj = {};
   obj.labels = raw.stations.slice(0, raw.stations.length - 1);
   let stationTicketSum = {},
@@ -64,16 +66,19 @@ const transform = (raw, optionsSet) => {
       classes.add(v.carClassName);
       if (!(v.carClassName in wagonCountSum)) wagonCountSum[v.carClassName] = 0;
       if (v.carClass in capacities) {
-        wagonCountSum[v.carClassName] = Math.max(Math.ceil(v.ticketsSold * 1.0 / capacities[v.carClass]), wagonCountSum[v.carClassName]);
+        wagonCountSum[v.carClassName] = Math.max(
+          Math.ceil((v.ticketsSold * 1.0) / capacities[v.carClass]),
+          wagonCountSum[v.carClassName]
+        );
       } else {
-        console.error("bad car class " + v.carClass)
+        console.error("bad car class " + v.carClass);
       }
     }
   });
   let totalTicketData = [];
   let totalCountData = [];
   let totalWagonCount = [];
-  classes.forEach(v => totalWagonCount.push(wagonCountSum[v]));
+  classes.forEach((v) => totalWagonCount.push(wagonCountSum[v]));
   raw.stations.forEach((v) => {
     totalTicketData.push(stationTicketSum[v.trim()]);
     totalCountData.push(stationCountSum[v.trim()]);
@@ -98,8 +103,8 @@ const transform = (raw, optionsSet) => {
       data: totalWagonCount,
       backgroundColor: "rgb(204, 160, 67)",
       borderWidth: 1,
-    }
-  ]
+    },
+  ];
   return obj;
 };
 
@@ -124,7 +129,7 @@ const GroupedBar = () => {
   const [isCount, setCount] = useState(true);
   const [filter, setFilter] = useState(new Set());
   const { trainNumber } = useParams();
-  const route = useRoute(trainNumber, date);
+  const { route, completed } = useRoute(trainNumber, date);
 
   useEffect(() => {
     if (route) {
@@ -171,48 +176,59 @@ const GroupedBar = () => {
     history.push(`/chart/${trainNumber}?date=${formatDate(newDate)}`);
   };
 
-  return route ? (
+  return (
     <Container bottomShift>
-      <div className={styles.heading}>
-        <h2>Маршрут {trainNumber}</h2>
-        <p>
-          Из {route.from} в {route.to}
-        </p>
-      </div>
-      <DayPicker onDayChange={onDayChange} value={date} />
-      <div className={styles.checkboxes}>
-        <div>
-          <Checkbox
-            text="Продажи"
-            onChange={handleInputChange}
-            checked={isSold}
-            name="isSold"
-          />
-          <Checkbox
-            text="Пассажиры"
-            onChange={handleInputChange}
-            checked={isCount}
-            name="isCount"
-          />
-        </div>
-        <div>
-          {[...filterOptions(route)].map((v) => (
-            <Checkbox
-              key={v}
-              name={v}
-              checked={filter.has(v)}
-              onChange={handleFilterChange}
-              text={v}
-            />
-          ))}
-        </div>
-      </div>
-      {curData && <Bar data={curData} options={options} />}
-      {curData && <Bar data={curData.megaChart} options={optionsClass} />}
+      {route && completed && (
+        <>
+          <div className={styles.heading}>
+            <h2>Маршрут {trainNumber}</h2>
+            <p>
+              Из {route.from} в {route.to}
+            </p>
+          </div>
+          <DayPicker onDayChange={onDayChange} value={date} />
+          <div className={styles.checkboxes}>
+            <div>
+              <Checkbox
+                text="Продажи"
+                onChange={handleInputChange}
+                checked={isSold}
+                name="isSold"
+              />
+              <Checkbox
+                text="Пассажиры"
+                onChange={handleInputChange}
+                checked={isCount}
+                name="isCount"
+              />
+            </div>
+            <div>
+              {[...filterOptions(route)].map((v) => (
+                <Checkbox
+                  key={v}
+                  name={v}
+                  checked={filter.has(v)}
+                  onChange={handleFilterChange}
+                  text={v}
+                />
+              ))}
+            </div>
+          </div>
+          {curData && <Bar data={curData} options={options} />}
+          {curData && <Bar data={curData.megaChart} options={optionsClass} />}
+        </>
+      )}
+      {!completed && <Spinner />}
+      {completed && !route && (
+        <>
+          <DayPicker onDayChange={onDayChange} value={date} />
+          <p>
+            Похоже, что на данную дату маршрут {trainNumber} не запланирован.
+          </p>
+        </>
+      )}
     </Container>
-  ) : (
-      <Spinner />
-    );
+  );
 };
 
 export default GroupedBar;

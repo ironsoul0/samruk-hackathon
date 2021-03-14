@@ -4,11 +4,14 @@ import { base, sendRequest, formatDate } from "../utils";
 
 const useRoute = (routeName, date) => {
   const [route, setRoute] = useState(null);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     setRoute(null);
+    setCompleted(false);
 
     const callback = (response, status) => {
+      setCompleted(true);
       if (status === 200 && response) {
         setRoute(response);
       }
@@ -26,7 +29,7 @@ const useRoute = (routeName, date) => {
     );
   }, [routeName, date]);
 
-  return route;
+  return { route, completed };
 };
 
 export default useRoute;

@@ -5,6 +5,7 @@ import { ROUTES, sendRequest } from "../utils";
 
 const useRoutes = (date) => {
   const [routes, setRoutes] = useState([]);
+  const [completed, setCompleted] = useState(true);
   const [responses, setResponses] = useState([]);
   const [count, setCount] = useState(0);
 
@@ -12,6 +13,7 @@ const useRoutes = (date) => {
     setRoutes([]);
     setResponses([]);
     setCount(0);
+    setCompleted(false);
 
     const callback = (response, status) => {
       if (status === 200 && response && response.wagons) {
@@ -45,10 +47,11 @@ const useRoutes = (date) => {
   useEffect(() => {
     if (count === ROUTES.length) {
       setRoutes(responses);
+      setCompleted(true);
     }
   }, [count]);
 
-  return routes;
+  return { routes, completed };
 };
 
 export default useRoutes;

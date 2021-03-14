@@ -14,7 +14,7 @@ function Table() {
   const routesRef = useRef([]);
   const history = useHistory();
   const [date, setDate] = useState(getNextDay());
-  const routes = useRoutes(date);
+  const { routes, completed } = useRoutes(date);
 
   useEffect(() => {
     routesRef.current.forEach((routeRef, i) => {
@@ -26,7 +26,11 @@ function Table() {
     <Container className={classes.root}>
       <h2>Маршруты</h2>
       <DayPicker onDayChange={setDate} />
-      {routes.length ? (
+      {!completed && <Spinner />}
+      {completed && !routes.length && (
+        <p>Похоже что, на эту дату маршруты не запланированы.</p>
+      )}
+      {completed && routes.length > 0 && (
         <div className={classes.table}>
           <div className={clsx(classes.row, classes.mainRow)}>
             <ColumnTitle title="№ поезда" />
@@ -71,8 +75,6 @@ function Table() {
             </div>
           ))}
         </div>
-      ) : (
-        <Spinner />
       )}
     </Container>
   );
