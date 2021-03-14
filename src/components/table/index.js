@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useHistory } from "react-router-dom";
 
-import { ROUTES } from "../../utils";
 import { useRoutes } from "../../hooks";
-import { config } from "../../utils";
+import { config, getNextDay } from "../../utils";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
@@ -14,7 +13,7 @@ import DayPicker from "../dayPicker";
 function Table() {
   const routesRef = useRef([]);
   const history = useHistory();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(getNextDay());
   const routes = useRoutes(date);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ function Table() {
     <Container className={classes.root}>
       <h2>Маршруты</h2>
       <DayPicker onDayChange={setDate} />
-      {routes && routes.length === ROUTES.length ? (
+      {routes.length ? (
         <div className={classes.table}>
           <div className={clsx(classes.row, classes.mainRow)}>
             <ColumnTitle title="№ поезда" />
@@ -43,7 +42,7 @@ function Table() {
               key={i}
               className={clsx(classes.row, classes.secondaryRow)}
               ref={(el) => (routesRef.current[i] = el)}
-              onClick={() => history.push(`/${current.trainNumber}`)}
+              onClick={() => history.push(`/chart/${current.trainNumber}`)}
             >
               <div>
                 <p>{current.trainNumber}</p>
@@ -55,7 +54,15 @@ function Table() {
                 <p>{current.to}</p>
               </div>
               <div>
-                <p>{current.totalTicketsRemaining}</p>
+                <p
+                  className={clsx([
+                    classes.perfect,
+                    current.totalTicketsRemaining < 30 && classes.attention,
+                    current.totalTicketsRemaining < 10 && classes.trouble,
+                  ])}
+                >
+                  {current.totalTicketsRemaining}
+                </p>
               </div>
             </div>
           ))}

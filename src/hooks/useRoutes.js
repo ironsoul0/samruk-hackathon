@@ -1,31 +1,54 @@
 import { useState, useEffect } from "react";
 
-import { ROUTES, loadRoutes } from "../utils";
+import { base, formatDate } from "../utils";
+import { ROUTES, sendRequest } from "../utils";
 
 const useRoutes = (date) => {
-  const [orders, setOrders] = useState([]);
+  const [routes, setRoutes] = useState([]);
+  const [responses, setResponses] = useState([]);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    setOrders([]);
+    setRoutes([]);
+    setResponses([]);
+    setCount(0);
 
     const callback = (response, status) => {
-      if (status === 200) {
+      if (status === 200 && response && response.wagons) {
         let totalTicketsRemaining = 0;
-        for (const wagon of response.tickets) {
-          totalTicketsRemaining += wagon.ticketsRemaining;
+        if (response.wagons) {
+          for (const wagon of response.wagons) {
+            totalTicketsRemaining += parseInt(wagon.ticketsRemaining);
+          }
         }
         response.totalTicketsRemaining = totalTicketsRemaining;
-
-        setOrders((orders) => [...orders, response]);
+        setResponses((responses) => [...responses, response]);
       }
+
+      setCount((count) => count + 1);
     };
 
     for (const route of ROUTES) {
-      loadRoutes(route, date, callback);
+      sendRequest(
+        "GET",
+        `${base}/api/parse`,
+        {
+          route,
+          date: formatDate(date),
+        },
+        null,
+        callback
+      );
     }
   }, [date]);
 
-  return orders;
+  useEffect(() => {
+    if (count === ROUTES.length) {
+      setRoutes(responses);
+    }
+  }, [count]);
+
+  return routes;
 };
 
 export default useRoutes;

@@ -1,0 +1,18 @@
+.checkboxes {
+  display: flex;
+  padding: 5px 0px;
+  padding-bottom: 10px;
+}
+
+.checkboxes > div:first-of-type {
+  margin-right: 30px;
+}
+
+.heading > h2 {
+  margin-bottom: 0;
+}
+
+.heading > p {
+  margin-top: 5px;
+  font-size: 1em;
+}

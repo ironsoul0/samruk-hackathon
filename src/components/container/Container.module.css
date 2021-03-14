@@ -4,6 +4,10 @@
   margin: auto;
 }
 
+.bottomShift {
+  margin-bottom: 40px;
+}
+
 @media screen and (max-width: 768px) {
   .container {
     padding: 0 18px;

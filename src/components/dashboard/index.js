@@ -1,74 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "@reactchartjs/react-chart.js";
-
-import Container from "../container";
 import { useParams } from "react-router-dom";
-import { api } from "../../utils";
 
-const apiData = {
-  trainNumber: "300T",
-  from: "Алматы 2",
-  to: "Нур-Султан 1",
-  date: "2012-15-10",
-  stations: ["Алматы 2", "Алматы 1", "Караганды", "Нур-Султан 1"],
-  tickets: [
-    {
-      wagonNumber: 5,
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsRemaining: 15,
-    },
-    {
-      wagonNumber: 7,
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsRemaining: 17,
-    },
-    {
-      wagonNumber: 15,
-      carClass: "3П",
-      carClassName: "Плацкарт",
-      ticketsRemaining: 25,
-    },
-  ],
-  predictions: [
-    {
-      station: "Алматы 2",
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsSold: 15,
-      count: 14,
-    },
-    {
-      station: "Алматы 2",
-      carClass: "3П",
-      carClassName: "Плацкарт",
-      ticketsSold: 12,
-      count: 10,
-    },
-    {
-      station: "Алматы 1",
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsSold: 22,
-      count: 22,
-    },
-    {
-      station: "Караганды",
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsSold: 32,
-      count: 15,
-    },
-    {
-      station: "Нур-Султан 1",
-      carClass: "2K",
-      carClassName: "Купе",
-      ticketsSold: 40,
-      count: 12,
-    },
-  ],
-};
+import styles from "./Dashboard.module.css";
+import Spinner from "../spinner";
+import Container from "../container";
+import { getNextDay } from "../../utils";
+import { useRoute } from "../../hooks";
+import DayPicker from "../dayPicker";
+import Checkbox from "../checkbox";
 
 const options = {
   scales: {
@@ -92,9 +32,9 @@ const transform = (raw, optionsSet) => {
     stationCountSum[v.station] = 0;
   });
   raw.predictions.forEach((v) => {
-    if (optionsSet.has(v.carClassName))
+    if (optionsSet.has(v.carClass))
       stationTicketSum[v.station] += v.ticketsSold;
-    if (optionsSet.has(v.carClassName)) stationCountSum[v.station] += v.count;
+    if (optionsSet.has(v.carClass)) stationCountSum[v.station] += v.count;
   });
   let totalTicketData = [];
   let totalCountData = [];
@@ -104,12 +44,12 @@ const transform = (raw, optionsSet) => {
   });
   obj.datasets = [
     {
-      label: "# ожидаемая продажа билетов",
+      label: "# Ожидаемая продажа билетов",
       data: totalTicketData,
       backgroundColor: "rgb(255, 99, 132)",
     },
     {
-      label: "# ожидаемое количество пассажиров",
+      label: "# Ожидаемое количество пассажиров",
       data: totalCountData,
       backgroundColor: "rgb(54, 162, 235)",
     },
@@ -119,28 +59,26 @@ const transform = (raw, optionsSet) => {
 
 const filterOptions = (raw) => {
   let data = new Set();
-  raw.predictions.forEach((v) => data.add(v.carClassName));
+  raw.predictions.forEach((v) => data.add(v.carClass));
   return data;
 };
 
-const ifilter = filterOptions(apiData);
-
 const GroupedBar = () => {
-  const [info, setInfo] = useState({ from: "", to: "" });
+  const [date, setDate] = useState(getNextDay());
   const [curData, setCurData] = useState();
   const [isSold, setSold] = useState(true);
   const [isCount, setCount] = useState(true);
-  const [filter, setFilter] = useState(ifilter);
+  const [filter, setFilter] = useState(new Set());
   const { trainNumber } = useParams();
-  const date = "2021-04-01";
+
+  const route = useRoute(trainNumber, date);
 
   useEffect(() => {
-    if (!curData) setCurData(transform(apiData, ifilter, "initCur"));
-
-    api(`api/parse?route=${trainNumber}&date=${date}`, {
-      mode: "cors",
-    }).then(({ data }) => setInfo(data));
-  }, [info, trainNumber, date]);
+    if (route) {
+      setCurData(transform(route, filterOptions(route)));
+      setFilter(filterOptions(route));
+    }
+  }, [route]);
 
   const handleInputChange = (event) => {
     const target = event.target;
@@ -159,7 +97,7 @@ const GroupedBar = () => {
   };
 
   const handleData = (sold, count, ffilter) => {
-    const initData = transform(apiData, ffilter, "handle");
+    const initData = transform(route, ffilter);
     let tempData = {};
     tempData.datasets = [];
     if (sold) tempData.datasets = [...tempData.datasets, initData.datasets[0]];
@@ -176,48 +114,46 @@ const GroupedBar = () => {
     handleData(isSold, isCount, ff);
   };
 
-  return (
-    <Container>
-      <div>
-        <h1 className="title">
-          Маршрут {info.from} - {info.to}, {date}
-        </h1>
+  return route ? (
+    <Container bottomShift>
+      <div className={styles.heading}>
+        <h2>Маршрут {trainNumber}</h2>
+        <p>
+          Из {route.from} в {route.to}
+        </p>
       </div>
-      <div>
-        <label>
-          Продажи:
-          <input
-            type="checkbox"
-            name="isSold"
+      <DayPicker onDayChange={setDate} value={date} />
+      <div className={styles.checkboxes}>
+        <div>
+          <Checkbox
+            text="Продажи"
+            onChange={handleInputChange}
             checked={isSold}
-            onChange={handleInputChange}
+            name="isSold"
           />
-        </label>
-      </div>
-      <div>
-        <label>
-          Пассажиры:
-          <input
-            type="checkbox"
-            name="isCount"
+          <Checkbox
+            text="Пассажиры"
+            onChange={handleInputChange}
             checked={isCount}
-            onChange={handleInputChange}
-          />
-        </label>
-      </div>
-      <Bar data={curData} options={options} />
-      {[...ifilter].map((v) => (
-        <div key={v}>
-          <label>{v}</label>
-          <input
-            type="checkbox"
-            name={v}
-            checked={filter.has(v)}
-            onChange={handleFilterChange}
+            name="isCount"
           />
         </div>
-      ))}
+        <div>
+          {[...filterOptions(route)].map((v) => (
+            <Checkbox
+              key={v}
+              name={v}
+              checked={filter.has(v)}
+              onChange={handleFilterChange}
+              text={v}
+            />
+          ))}
+        </div>
+      </div>
+      <Bar data={curData} options={options} />
     </Container>
+  ) : (
+    <Spinner />
   );
 };
 

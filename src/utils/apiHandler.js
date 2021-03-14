@@ -1,5 +1,3 @@
-import { base } from "./api";
-
 function buildURI(params) {
   return (
     "?" +
@@ -11,7 +9,7 @@ function buildURI(params) {
   );
 }
 
-export function sendRequest(method, endpoint, paramsData, jsonData, callback) {
+export function sendRequest(method, url, paramsData, jsonData, callback) {
   let json;
   let params;
 
@@ -24,7 +22,6 @@ export function sendRequest(method, endpoint, paramsData, jsonData, callback) {
   }
 
   const xhr = new XMLHttpRequest();
-  const url = base + endpoint;
 
   xhr.responseType = "json";
   xhr.open(method, url + params);
@@ -71,7 +68,6 @@ export function loadRoutes(route, date, callback) {
         ticketsRemaining: 25,
       },
     ],
-
     predictions: [
       {
         station: "Алматы 2",

@@ -3,8 +3,16 @@ import clsx from "clsx";
 
 import classes from "./Container.module.css";
 
-const Container = ({ children, className }) => (
-  <div className={clsx(classes.container, className)}>{children}</div>
+const Container = ({ children, className, bottomShift }) => (
+  <div
+    className={clsx([
+      classes.container,
+      className,
+      bottomShift && classes.bottomShift,
+    ])}
+  >
+    {children}
+  </div>
 );
 
 export default Container;

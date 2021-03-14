@@ -12,10 +12,6 @@ const links = [
     label: "Главная",
   },
   {
-    href: "/analysis",
-    label: "Анализ",
-  },
-  {
     href: "/about",
     label: "О проекте",
   },

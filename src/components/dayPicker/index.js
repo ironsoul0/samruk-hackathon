@@ -7,6 +7,7 @@ import ruLocale from "date-fns/locale/ru";
 import "moment/locale/ru";
 
 import classes from "./DayPicker.module.css";
+import { getNextDay } from "../../utils";
 
 const FORMAT = "MM/dd/yyyy";
 
@@ -51,16 +52,17 @@ const WEEKDAYS_LONG = [
 
 const WEEKDAYS_SHORT = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
-function DayPicker({ onDayChange }) {
+function DayPicker({ onDayChange, value }) {
   return (
     <div className={classes.root}>
       <label for="dayPicker">Выберите дату отправления:</label>
       <DayPickerInput
+        value={value}
         onDayChange={onDayChange}
         formatDate={formatDate}
         format={FORMAT}
         parseDate={parseDate}
-        placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
+        placeholder={`${dateFnsFormat(getNextDay(), FORMAT)}`}
         className={classes.dayPicker}
         dayPickerProps={{
           locale: ruLocale,

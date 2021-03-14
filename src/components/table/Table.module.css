@@ -58,9 +58,12 @@
   font-weight: bold;
 }
 
+.attention {
+  color: #fcba03;
+}
+
 .trouble {
   color: #f02556;
-  font-weight: bold;
 }
 
 .form input {
