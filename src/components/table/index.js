@@ -117,21 +117,15 @@ function Table() {
       {orders && (
         <div className={classes.table}>
           <div className={clsx(classes.row, classes.mainRow)}>
-            <div>
-              <p>№ поезда</p>
-            </div>
-            <div>
-              <p>Точка отправления</p>
-            </div>
-            <div>
-              <p>Точка прибытия</p>
-            </div>
-            <div>
-              <p>Дата отправления</p>
-            </div>
-            <div>
-              <p>Количество оставшихся мест</p>
-            </div>
+            <ColumnTitle title="№ поезда" />
+            <ColumnTitle title="Точка отправления" />
+            <ColumnTitle title="Точка прибытия" />
+            <ColumnTitle title="Дата отправления" />
+            {/* <ColumnTitle
+              title="Вагоны"
+              tooltipText="Позволяет видеть рекоммендуемое и реальное количество вагонов в данный момент времени."
+            /> */}
+            <ColumnTitle title="Количество оставшихся мест" />
           </div>
           {orders.map((current, i) => (
             <div

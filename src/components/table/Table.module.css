@@ -106,7 +106,7 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .row div:nth-child(3) {
+  .row > div:nth-child(3) {
     display: none;
   }
 }
