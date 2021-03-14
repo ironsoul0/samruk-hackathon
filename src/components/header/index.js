@@ -12,6 +12,10 @@ const links = [
     label: "Главная",
   },
   {
+    href: "/analysis",
+    label: "Анализ",
+  },
+  {
     href: "/about",
     label: "О проекте",
   },
@@ -24,9 +28,9 @@ const Header = () => {
     <nav className={clsx(classes.root, { [classes.active]: menu })}>
       <Container className={classes.content}>
         <div className={classes.logo}>
-          <a href="/">
+          <Link to="/">
             <Logo />
-          </a>
+          </Link>
         </div>
         <div className={classes.links}>
           {links.map((el) => (

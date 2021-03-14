@@ -25,17 +25,17 @@
   padding: 10px 16px;
   left: calc(50% - 30px);
   top: 100%;
-  z-index: 1337;
+  z-index: 0;
   transform: translate(-50%, -10px);
   background: white;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   font-size: 15px;
-  min-width: 350px;
+  min-width: 220px;
   font-weight: normal;
   white-space: wrap;
   opacity: 0;
-  transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+  transition: all 0.2s ease-in;
 }
 
 .tooltipMy::before {
@@ -53,6 +53,7 @@
 }
 
 .tooltipShown {
+  z-index: 1337;
   opacity: 1;
   transform: translate(-50%, 0px);
 }

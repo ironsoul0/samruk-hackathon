@@ -1,0 +1,9 @@
+.root {
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.root > label {
+  display: block;
+  margin-bottom: 10px;
+}

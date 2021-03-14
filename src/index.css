@@ -6,3 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.DayPickerInput > input {
+  padding: 5px 10px;
+  width: 200px;
+}

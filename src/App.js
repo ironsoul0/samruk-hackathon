@@ -1,9 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "react-day-picker/lib/style.css";
 
 import About from "./components/about";
 import Header from "./components/header";
 import Table from "./components/table";
+import Dashboard from "./components/dashboard";
+import Analysis from "./components/analysis";
 
 function App() {
   return (
@@ -14,6 +19,12 @@ function App() {
       </Route>
       <Route exact path="/about">
         <About />
+      </Route>
+      <Route exact path="/chart/:trainNumber">
+        <Dashboard />
+      </Route>
+      <Route exact path="/analysis">
+        <Analysis />
       </Route>
     </Router>
   );
