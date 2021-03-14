@@ -25,7 +25,7 @@ function Table() {
   return (
     <Container className={classes.root}>
       <h2>Маршруты</h2>
-      <DayPicker onDayChange={setDate} />
+      <DayPicker onDayChange={setDate} value={date} />
       {!completed && <Spinner />}
       {completed && !routes.length && (
         <p>Похоже что, на эту дату маршруты не запланированы.</p>
