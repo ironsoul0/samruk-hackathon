@@ -19,7 +19,7 @@ function useHover() {
         node.removeEventListener("mouseout", handleMouseOut);
       };
     }
-  }, [ref.current]);
+  }, [ref]);
 
   return [ref, value];
 }

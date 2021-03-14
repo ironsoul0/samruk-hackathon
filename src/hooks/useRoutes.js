@@ -49,7 +49,7 @@ const useRoutes = (date) => {
       setRoutes(responses);
       setCompleted(true);
     }
-  }, [count]);
+  }, [count, responses]);
 
   return { routes, completed };
 };
