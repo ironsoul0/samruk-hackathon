@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useHistory } from "react-router-dom";
 
 import { useRoutes } from "../../hooks";
-import { config, getNextDay } from "../../utils";
+import { config, getNextDay, formatDate } from "../../utils";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
@@ -42,7 +42,11 @@ function Table() {
               key={i}
               className={clsx(classes.row, classes.secondaryRow)}
               ref={(el) => (routesRef.current[i] = el)}
-              onClick={() => history.push(`/chart/${current.trainNumber}`)}
+              onClick={() =>
+                history.push(
+                  `/chart/${current.trainNumber}?date=${formatDate(date)}`
+                )
+              }
             >
               <div>
                 <p>{current.trainNumber}</p>

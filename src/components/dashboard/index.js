@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "@reactchartjs/react-chart.js";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 
 import styles from "./Dashboard.module.css";
 import Spinner from "../spinner";
 import Container from "../container";
-import { getNextDay } from "../../utils";
+import { getNextDay, formatDate } from "../../utils";
 import { useRoute } from "../../hooks";
 import DayPicker from "../dayPicker";
 import Checkbox from "../checkbox";
@@ -63,8 +63,16 @@ const filterOptions = (raw) => {
   return data;
 };
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const GroupedBar = () => {
-  const [date, setDate] = useState(getNextDay());
+  const query = useQuery();
+  const history = useHistory();
+  const [date, setDate] = useState(
+    query.get("date") ? new Date(query.get("date")) : getNextDay()
+  );
   const [curData, setCurData] = useState();
   const [isSold, setSold] = useState(true);
   const [isCount, setCount] = useState(true);
@@ -114,6 +122,11 @@ const GroupedBar = () => {
     handleData(isSold, isCount, ff);
   };
 
+  const onDayChange = (newDate) => {
+    setDate(newDate);
+    history.push(`/chart/${trainNumber}?date=${formatDate(newDate)}`);
+  };
+
   return route ? (
     <Container bottomShift>
       <div className={styles.heading}>
@@ -122,7 +135,7 @@ const GroupedBar = () => {
           Из {route.from} в {route.to}
         </p>
       </div>
-      <DayPicker onDayChange={setDate} value={date} />
+      <DayPicker onDayChange={onDayChange} value={date} />
       <div className={styles.checkboxes}>
         <div>
           <Checkbox
