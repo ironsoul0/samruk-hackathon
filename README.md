@@ -1,8 +1,13 @@
+<p align="center">
+  <a href="http://laddy.app">
+    <img width="210" src="./public/logo.png">
+  </a>
+</p>
 <h1 align="center">
   Samruk Hackathon
 </h1>
-<p align="center">
-   Built with <a href="https://redux-toolkit.js.org/" target="_blank">Redux Toolkit</a> and hosted with <a href="https://www.netlify.com/" target="_blank">Netlify</a>
+<p align="center" width="320">
+   Точный прогноз необходимого количество вагонов для машрутов КТЖ 🚆
 </p>
 <p align="center">
   <a href="https://app.netlify.com/sites/dreamy-colden-c7c1ac/deploys" target="_blank">
