@@ -13,6 +13,7 @@ function index() {
 				</Link>
 				<h2>Анализ</h2>
 				<img src="/analysis/index.png" alt="analysis1" className={classes.container} />
+				<img src="/analysis/index1.png" alt="analysis1" className={classes.container} />
 				<img src="/analysis/index2.png" alt="analysis1" className={classes.container} />
 				<img src="/analysis/index3.png" alt="analysis1" className={classes.container} />
 				<img src="/analysis/index4.png" alt="analysis1" className={classes.container} />
