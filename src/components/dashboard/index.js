@@ -21,23 +21,59 @@ const options = {
     ],
   },
 };
+const optionsClass = {
+  scales: {
+    xAxes: [{
+      barThickness: 73
+    }],
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
+};
 
 const transform = (raw, optionsSet) => {
+  const capacities = {
+    '2К': 36,
+    '3П': 54,
+    '2Д': 18,
+    '2С': 36,
+    '2Л': 6,
+    '1Д': 12,
+    '1Л': 10,
+    '3О': 81
+  }
   let obj = {};
   obj.labels = raw.stations.slice(0, raw.stations.length - 1);
   let stationTicketSum = {},
+    wagonCountSum = {},
     stationCountSum = {};
   raw.predictions.forEach((v) => {
     stationTicketSum[v.station] = 0;
     stationCountSum[v.station] = 0;
   });
+  let classes = new Set();
   raw.predictions.forEach((v) => {
-    if (optionsSet.has(v.carClassName))
+    if (optionsSet.has(v.carClassName)) {
       stationTicketSum[v.station] += v.ticketsSold;
-    if (optionsSet.has(v.carClassName)) stationCountSum[v.station] += v.count;
+      stationCountSum[v.station] += v.count;
+      classes.add(v.carClassName);
+      if (!(v.carClassName in wagonCountSum)) wagonCountSum[v.carClassName] = 0;
+      if (v.carClass in capacities) {
+        wagonCountSum[v.carClassName] = Math.max(Math.ceil(v.ticketsSold * 1.0 / capacities[v.carClass]), wagonCountSum[v.carClassName]);
+      } else {
+        console.error("bad car class " + v.carClass)
+      }
+    }
   });
   let totalTicketData = [];
   let totalCountData = [];
+  let totalWagonCount = [];
+  classes.forEach(v => totalWagonCount.push(wagonCountSum[v]));
   raw.stations.forEach((v) => {
     totalTicketData.push(stationTicketSum[v.trim()]);
     totalCountData.push(stationCountSum[v.trim()]);
@@ -54,6 +90,16 @@ const transform = (raw, optionsSet) => {
       backgroundColor: "rgb(54, 162, 235)",
     },
   ];
+  obj.megaChart = {};
+  obj.megaChart.labels = [...classes];
+  obj.megaChart.datasets = [
+    {
+      label: "# Прогнозированное количество вагонов",
+      data: totalWagonCount,
+      backgroundColor: "rgb(204, 160, 67)",
+      borderWidth: 1,
+    }
+  ]
   return obj;
 };
 
@@ -78,7 +124,6 @@ const GroupedBar = () => {
   const [isCount, setCount] = useState(true);
   const [filter, setFilter] = useState(new Set());
   const { trainNumber } = useParams();
-
   const route = useRoute(trainNumber, date);
 
   useEffect(() => {
@@ -87,7 +132,6 @@ const GroupedBar = () => {
       setFilter(filterOptions(route));
     }
   }, [route]);
-
   const handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -110,7 +154,7 @@ const GroupedBar = () => {
     tempData.datasets = [];
     if (sold) tempData.datasets = [...tempData.datasets, initData.datasets[0]];
     if (count) tempData.datasets = [...tempData.datasets, initData.datasets[1]];
-    console.log(ffilter, tempData);
+    tempData.megaChart = initData.megaChart;
     setCurData(tempData);
   };
 
@@ -163,11 +207,12 @@ const GroupedBar = () => {
           ))}
         </div>
       </div>
-      <Bar data={curData} options={options} />
+      {curData && <Bar data={curData} options={options} />}
+      {curData && <Bar data={curData.megaChart} options={optionsClass} />}
     </Container>
   ) : (
-    <Spinner />
-  );
+      <Spinner />
+    );
 };
 
 export default GroupedBar;
