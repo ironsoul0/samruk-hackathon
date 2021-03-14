@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "react-day-picker/lib/style.css";
 
 import About from "./components/about";
 import Header from "./components/header";

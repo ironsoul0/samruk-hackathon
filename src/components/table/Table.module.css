@@ -22,12 +22,6 @@
   font-weight: bold;
 }
 
-.separator {
-  height: 2px;
-  background-color: black;
-  width: 100%;
-}
-
 .secondaryRow {
   transition: background-color 0.2s ease-in-out;
   border-radius: 5px;
@@ -35,7 +29,7 @@
 }
 
 .secondaryRow:hover {
-  background-color: white;
+  background-color: #eee;
 }
 
 .row > div {
@@ -94,6 +88,16 @@
   outline: none;
 }
 
+.picker {
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.picker > label {
+  display: block;
+  margin-bottom: 10px;
+}
+
 @keyframes fadeDown {
   0% {
     opacity: 0;
@@ -105,12 +109,6 @@
   }
 }
 
-@media screen and (max-width: 1200px) {
-  .row > div:nth-child(3) {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 768px) {
   .table {
     overflow-x: scroll;
@@ -118,9 +116,5 @@
 
   .secondaryRow:hover {
     background: none;
-  }
-
-  .row div:last-of-type {
-    max-width: 80px;
   }
 }

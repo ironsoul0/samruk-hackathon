@@ -1,141 +1,49 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-// import { useDispatch, useSelector } from "react-redux";
-import { Line } from "@reactchartjs/react-chart.js";
+import { useHistory } from "react-router-dom";
 
-// import { initFetch } from "../../store/reducers/orderSlice";
-import { config, ROUTES } from "../../utils";
-import { loadRoutes } from "../../utils/apiHandler";
+import { ROUTES } from "../../utils";
+import { useRoutes } from "../../hooks";
+import { config } from "../../utils";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
 import ColumnTitle from "../columnTitle";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
-
-const options = {
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
-  title: {
-    display: false,
-  },
-  legend: {
-    display: false,
-  },
-  scales: {
-    yAxes: [
-      {
-        display: false,
-      },
-    ],
-    xAxes: [
-      {
-        display: false,
-      },
-    ],
-  },
-  elements: {
-    point: {
-      radius: 0,
-    },
-  },
-};
-
-const LineChart = ({ data }) => (
-  <Line height={70} data={data} options={options} />
-);
+import DayPicker from "../dayPicker";
 
 function Table() {
   const routesRef = useRef([]);
-  const [ orders, setOrders ] = useState([]);
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(initFetch());
-  // }, [dispatch]);
+  const history = useHistory();
+  const [date, setDate] = useState(new Date());
+  const routes = useRoutes(date);
 
   useEffect(() => {
     routesRef.current.forEach((routeRef, i) => {
       config.sr.reveal(routeRef, config.srConfig(i * 10));
     });
-  }, [orders]);
-
-  const updateOrders = () => {
-    setOrders([]);
-    const callback = (response, status) => {
-      if (status === 200) {
-        
-        let totalTicketsRemaining = 0;
-        for (const wagon of response.tickets) {
-          totalTicketsRemaining += wagon.ticketsRemaining
-        }
-        response.totalTicketsRemaining = totalTicketsRemaining
-
-        setOrders((orders) => [...orders, response]);
-      
-      }
-      else {
-        console.log(response);
-      }
-    }
-
-    for (const route of ROUTES) {
-      loadRoutes(route, new Date(), callback);
-    }
-  }
-
-  useEffect(() => {
-    updateOrders();
-  }, []);
-
-  const getData = useCallback((status) => {
-    return {
-      labels: ["1", "2", "3", "4", "5", "6"],
-      datasets: [
-        {
-          data:
-            status === 0
-              ? [5, 2, 3, 12, 19, 3]
-              : status === 1
-                ? [1, 8, 13, 1, 2, 9]
-                : [12, 19, 3, 5, 2, 3],
-          backgroundColor: "white",
-          borderColor: status === 0 ? "#76c26a" : "#f02556",
-        },
-      ],
-    };
-  });
+  }, [routes]);
 
   return (
     <Container className={classes.root}>
-      <Link to="/analysis">
-        Анализ данных
-      </Link>
       <h2>Маршруты</h2>
-      {orders && (
+      <DayPicker onDayChange={setDate} />
+      {routes && routes.length === ROUTES.length ? (
         <div className={classes.table}>
           <div className={clsx(classes.row, classes.mainRow)}>
             <ColumnTitle title="№ поезда" />
             <ColumnTitle title="Точка отправления" />
             <ColumnTitle title="Точка прибытия" />
-            <ColumnTitle title="Дата отправления" />
-            {/* <ColumnTitle
-              title="Вагоны"
-              tooltipText="Позволяет видеть рекоммендуемое и реальное количество вагонов в данный момент времени."
-            /> */}
-            <ColumnTitle title="Количество оставшихся мест" />
+            <ColumnTitle
+              title="Места"
+              tooltipText="Сумма по количеству оставшихся мест в каждом из вагонов (купе и плацкарт)."
+            />
           </div>
-          {orders.map((current, i) => (
+          {routes.map((current, i) => (
             <div
               key={i}
               className={clsx(classes.row, classes.secondaryRow)}
               ref={(el) => (routesRef.current[i] = el)}
+              onClick={() => history.push(`/${current.trainNumber}`)}
             >
               <div>
                 <p>{current.trainNumber}</p>
@@ -147,16 +55,14 @@ function Table() {
                 <p>{current.to}</p>
               </div>
               <div>
-                <p>{current.date}</p>
-              </div>
-              <div>
-              <p>{current.totalTicketsRemaining}</p>
+                <p>{current.totalTicketsRemaining}</p>
               </div>
             </div>
           ))}
         </div>
+      ) : (
+        <Spinner />
       )}
-      {!orders && <Spinner />}
     </Container>
   );
 }
