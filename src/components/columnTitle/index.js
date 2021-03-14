@@ -11,14 +11,21 @@ const ColumnTitle = ({ title, tooltipText }) => {
   return (
     <div className={styles.root}>
       <p>{title}</p>
-      <span ref={hoverRef}>
-        <InfoIcon className={styles.icon} />
-      </span>
-      <div
-        className={clsx([styles.tooltipMy, isHovered && styles.tooltipShown])}
-      >
-        We love Krauch
-      </div>
+      {tooltipText && (
+        <>
+          <span ref={hoverRef}>
+            <InfoIcon className={styles.icon} />
+          </span>
+          <div
+            className={clsx([
+              styles.tooltipMy,
+              isHovered && styles.tooltipShown,
+            ])}
+          >
+            {tooltipText}
+          </div>
+        </>
+      )}
     </div>
   );
 };
