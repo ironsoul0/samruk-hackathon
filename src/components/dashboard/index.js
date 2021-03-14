@@ -24,7 +24,7 @@ const options = {
 
 const transform = (raw, optionsSet) => {
   let obj = {};
-  obj.labels = raw.stations;
+  obj.labels = raw.stations.slice(0, raw.stations.length - 1);
   let stationTicketSum = {},
     stationCountSum = {};
   raw.predictions.forEach((v) => {
@@ -32,15 +32,15 @@ const transform = (raw, optionsSet) => {
     stationCountSum[v.station] = 0;
   });
   raw.predictions.forEach((v) => {
-    if (optionsSet.has(v.carClass))
+    if (optionsSet.has(v.carClassName))
       stationTicketSum[v.station] += v.ticketsSold;
-    if (optionsSet.has(v.carClass)) stationCountSum[v.station] += v.count;
+    if (optionsSet.has(v.carClassName)) stationCountSum[v.station] += v.count;
   });
   let totalTicketData = [];
   let totalCountData = [];
   raw.stations.forEach((v) => {
-    totalTicketData.push(stationTicketSum[v]);
-    totalCountData.push(stationCountSum[v]);
+    totalTicketData.push(stationTicketSum[v.trim()]);
+    totalCountData.push(stationCountSum[v.trim()]);
   });
   obj.datasets = [
     {
@@ -59,7 +59,7 @@ const transform = (raw, optionsSet) => {
 
 const filterOptions = (raw) => {
   let data = new Set();
-  raw.predictions.forEach((v) => data.add(v.carClass));
+  raw.predictions.forEach((v) => data.add(v.carClassName));
   return data;
 };
 
