@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import clsx from "clsx";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { Line } from "@reactchartjs/react-chart.js";
 
-import { initFetch } from "../../store/reducers/orderSlice";
-import { config } from "../../utils";
+// import { initFetch } from "../../store/reducers/orderSlice";
+import { config, ROUTES } from "../../utils";
+import { loadRoutes } from "../../utils/apiHandler";
 import classes from "./Table.module.css";
 import Container from "../container";
 import Spinner from "../spinner";
@@ -51,18 +52,46 @@ const LineChart = ({ data }) => (
 
 function Table() {
   const routesRef = useRef([]);
-  const { orders } = useSelector((state) => state.order);
-  const dispatch = useDispatch();
+  const [ orders, setOrders ] = useState([]);
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(initFetch());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(initFetch());
+  // }, [dispatch]);
 
   useEffect(() => {
     routesRef.current.forEach((routeRef, i) => {
       config.sr.reveal(routeRef, config.srConfig(i * 10));
     });
   }, [orders]);
+
+  const updateOrders = () => {
+    setOrders([]);
+    const callback = (response, status) => {
+      if (status === 200) {
+        
+        let totalTicketsRemaining = 0;
+        for (const wagon of response.tickets) {
+          totalTicketsRemaining += wagon.ticketsRemaining
+        }
+        response.totalTicketsRemaining = totalTicketsRemaining
+
+        setOrders((orders) => [...orders, response]);
+      
+      }
+      else {
+        console.log(response);
+      }
+    }
+
+    for (const route of ROUTES) {
+      loadRoutes(route, new Date(), callback);
+    }
+  }
+
+  useEffect(() => {
+    updateOrders();
+  }, []);
 
   const getData = useCallback((status) => {
     return {
@@ -92,17 +121,16 @@ function Table() {
               <p>№ поезда</p>
             </div>
             <div>
-              <p>Отправление</p>
+              <p>Точка отправления</p>
             </div>
             <div>
-              <p>Время в пути</p>
+              <p>Точка прибытия</p>
             </div>
             <div>
-              <p>Прибытие</p>
+              <p>Дата отправления</p>
             </div>
-            <ColumnTitle title="Вагоны" />
             <div>
-              <p>Состояние</p>
+              <p>Количество оставшихся мест</p>
             </div>
           </div>
           {orders.map((current, i) => (
@@ -112,22 +140,19 @@ function Table() {
               ref={(el) => (routesRef.current[i] = el)}
             >
               <div>
-                <p>{current.id}</p>
-              </div>
-              <div className={classes.timing}>
-                <p>{current.departure.point}</p>
-                <p>{current.departure.time}</p>
+                <p>{current.trainNumber}</p>
               </div>
               <div>
-                <p>{current.pathTime}</p>
+                <p>{current.from}</p>
               </div>
-              <div className={classes.timing}>
-                <p>{current.arrival.point}</p>
-                <p>{current.arrival.time}</p>
-              </div>
-              <div>3</div>
               <div>
-                <LineChart data={getData(current.status)} />
+                <p>{current.to}</p>
+              </div>
+              <div>
+                <p>{current.date}</p>
+              </div>
+              <div>
+              <p>{current.totalTicketsRemaining}</p>
               </div>
             </div>
           ))}
