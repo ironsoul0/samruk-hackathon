@@ -68,7 +68,7 @@ const transform = (raw, optionsSet) => {
       if (!(v.carClassName in wagonCountSum)) wagonCountSum[v.carClassName] = 0;
       if (v.carClass in capacities) {
         wagonCountSum[v.carClassName] = Math.max(
-          Math.ceil((v.ticketsSold * 1.0) / capacities[v.carClass]),
+          Math.ceil((v.count * 1.0) / capacities[v.carClass]),
           wagonCountSum[v.carClassName]
         );
       } else {
