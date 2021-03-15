@@ -1,3 +1,6 @@
+import { routesInfo } from "../utils";
+import data from "./data.json";
+
 function buildURI(params) {
   return (
     "?" +
@@ -34,4 +37,12 @@ export function sendRequest(method, url, paramsData, jsonData, callback) {
     callback({ message: "Error request" }, 400);
   };
   xhr.send(json);
+}
+
+export function loadRoute(_route, _date, callback) {
+  const response = { ...data };
+  response.trainNumber = _route;
+  response.from = routesInfo[_route].from;
+  response.to = routesInfo[_route].to;
+  setTimeout(() => callback(response, 200), 1000);
 }

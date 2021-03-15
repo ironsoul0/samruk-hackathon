@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { base, sendRequest, formatDate } from "../utils";
+import { base, sendRequest, formatDate, loadRoute } from "../utils";
+
+const MOCK_RESULT = true;
 
 const useRoute = (routeName, date) => {
   const [route, setRoute] = useState(null);
@@ -17,16 +19,20 @@ const useRoute = (routeName, date) => {
       }
     };
 
-    sendRequest(
-      "GET",
-      `${base}/api/parse`,
-      {
-        route: routeName,
-        date: formatDate(date),
-      },
-      null,
-      callback
-    );
+    if (MOCK_RESULT) {
+      loadRoute(routeName, formatDate(date), callback);
+    } else {
+      sendRequest(
+        "GET",
+        `${base}/api/parse`,
+        {
+          route: routeName,
+          date: formatDate(date),
+        },
+        null,
+        callback
+      );
+    }
   }, [routeName, date]);
 
   return { route, completed };

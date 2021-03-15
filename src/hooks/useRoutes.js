@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { base, formatDate } from "../utils";
-import { ROUTES, sendRequest } from "../utils";
+import { ROUTES, base, formatDate, sendRequest, loadRoute } from "../utils";
+
+const MOCK_RESULT = true;
 
 const useRoutes = (date) => {
   const [routes, setRoutes] = useState([]);
@@ -24,6 +25,9 @@ const useRoutes = (date) => {
           }
         }
         response.totalTicketsRemaining = totalTicketsRemaining;
+        if (MOCK_RESULT) {
+          response.totalTicketsRemaining = Math.floor(Math.random() * 50);
+        }
         setResponses((responses) => [...responses, response]);
       }
 
@@ -31,16 +35,20 @@ const useRoutes = (date) => {
     };
 
     for (const route of ROUTES) {
-      sendRequest(
-        "GET",
-        `${base}/api/parse`,
-        {
-          route,
-          date: formatDate(date),
-        },
-        null,
-        callback
-      );
+      if (MOCK_RESULT) {
+        loadRoute(route, formatDate(date), callback);
+      } else {
+        sendRequest(
+          "GET",
+          `${base}/api/parse`,
+          {
+            route,
+            date: formatDate(date),
+          },
+          null,
+          callback
+        );
+      }
     }
   }, [date]);
 
