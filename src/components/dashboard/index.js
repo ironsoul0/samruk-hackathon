@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Bar } from "@reactchartjs/react-chart.js";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 
@@ -9,6 +9,7 @@ import { getNextDay, formatDate } from "../../utils";
 import { useRoute } from "../../hooks";
 import DayPicker from "../dayPicker";
 import Checkbox from "../checkbox";
+import TableDrawer from "../tableDrawer";
 
 const options = {
   scales: {
@@ -121,14 +122,15 @@ const useQuery = () => {
 const GroupedBar = () => {
   const query = useQuery();
   const history = useHistory();
-  const [date, setDate] = useState(
-    query.get("date") ? new Date(query.get("date")) : getNextDay()
-  );
   const [curData, setCurData] = useState();
+  const [showDrawer, setShowDrawer] = useState(false);
   const [isSold, setSold] = useState(true);
   const [isCount, setCount] = useState(true);
   const [filter, setFilter] = useState(new Set());
   const { trainNumber } = useParams();
+  const [date, setDate] = useState(getNextDay());
+  const queryDate = useMemo(() => query.get("date"), [query]);
+
   const { route, completed } = useRoute(trainNumber, date);
 
   useEffect(() => {
@@ -137,6 +139,15 @@ const GroupedBar = () => {
       setFilter(filterOptions(route));
     }
   }, [route]);
+
+  useEffect(() => {
+    setDate(queryDate ? new Date(queryDate) : getNextDay());
+  }, [queryDate]);
+
+  const toggleDrawer = () => {
+    setShowDrawer((drawer) => !drawer);
+  };
+
   const handleInputChange = (event) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -172,7 +183,6 @@ const GroupedBar = () => {
   };
 
   const onDayChange = (newDate) => {
-    setDate(newDate);
     history.push(`/chart/${trainNumber}?date=${formatDate(newDate)}`);
   };
 
@@ -180,11 +190,14 @@ const GroupedBar = () => {
     <Container bottomShift>
       {route && completed && (
         <>
-          <div className={styles.heading}>
-            <h2>Маршрут {trainNumber}</h2>
-            <p>
-              Из {route.from} в {route.to}
-            </p>
+          <div className={styles.header}>
+            <div className={styles.heading}>
+              <h2>Маршрут {trainNumber}</h2>
+              <p>
+                Из {route.from} в {route.to}
+              </p>
+            </div>
+            <button onClick={toggleDrawer}>Оставшиеся места</button>
           </div>
           <DayPicker onDayChange={onDayChange} value={date} />
           <div className={styles.checkboxes}>
@@ -216,6 +229,11 @@ const GroupedBar = () => {
           </div>
           {curData && <Bar data={curData} options={options} />}
           {curData && <Bar data={curData.megaChart} options={optionsClass} />}
+          <TableDrawer
+            route={route}
+            show={showDrawer}
+            toggleDrawer={toggleDrawer}
+          />
         </>
       )}
       {!completed && <Spinner />}

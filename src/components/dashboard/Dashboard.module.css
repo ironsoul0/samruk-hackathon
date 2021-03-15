@@ -16,3 +16,24 @@
   margin-top: 5px;
   font-size: 1em;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: -12px;
+}
+
+.header > button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #eee;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.header > button:hover {
+  opacity: 0.8;
+}

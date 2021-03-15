@@ -1,0 +1,67 @@
+.root {
+  height: 100%;
+  position: fixed;
+  width: 40%;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+  z-index: 1;
+  background: white;
+  padding: 10px 30px;
+}
+
+.visibleDrawer {
+  transform: translateX(0);
+  z-index: 200;
+}
+
+.backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  top: 0;
+  right: 0;
+  opacity: 0;
+  z-index: -1;
+  transition: all 0.1s ease-in-out;
+}
+
+.visibleBackdrop {
+  opacity: 1;
+  z-index: 2;
+}
+
+.table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table > thead > tr {
+  background-color: rgb(96, 172, 228);
+  color: #ffffff;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: 12px 15px;
+}
+
+.table > tbody > tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.table > tbody > tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    width: 70%;
+    overflow: auto;
+  }
+}
