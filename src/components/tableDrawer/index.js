@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 
 import styles from "./TableDrawer.module.css";
@@ -35,7 +35,7 @@ function TableDrawer({ route, show, toggleDrawer }) {
             ))}
           </tbody>
         </table>
-        Общее количество билетов: {totalTickets}
+        Количество оставшихся билетов: {totalTickets}
       </div>
       <div
         className={clsx([styles.backdrop, show && styles.visibleBackdrop])}
