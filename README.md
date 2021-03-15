@@ -4,10 +4,12 @@
   </a>
 </p>
 <h1 align="center">
-  Samruk Hackathon
+  Samruk Hackathon Winner 🏆
 </h1>
 <p align="center" width="320">
    Точный прогноз необходимого количество вагонов для машрутов КТЖ 🚆
+   <br />
+   Победитель в номинации "Лучшая архитектура".
 </p>
 <p align="center">
   <a href="https://app.netlify.com/sites/dreamy-colden-c7c1ac/deploys" target="_blank">
