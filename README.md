@@ -7,9 +7,11 @@
   Samruk Hackathon Winner 🏆
 </h1>
 <p align="center" width="320">
-   Точный прогноз необходимого количество вагонов для машрутов КТЖ 🚆
+   Accurate prediction of the number of railway carriages required for different routes 🚆
    <br />
-   Победитель в номинации "Лучшая архитектура".
+   Using state-of-the-art XGBoost library for ML predictions
+   <br />
+   "Best Architecture" title among all teams
 </p>
 <p align="center">
   <a href="https://app.netlify.com/sites/dreamy-colden-c7c1ac/deploys" target="_blank">
@@ -37,3 +39,11 @@
    ```sh
    npm start
    ```
+
+## 🏗️ Builders
+
+* Khafiz [@cmaster](https://github.com/hbatyrkhan) Batyrkhan
+* Rauan [@Krauchman](https://github.com/Krauchman) Omarov
+* Nuradil [@nuradilK](https://github.com/nuradilK) Kozhakhmet
+* Dulat [@dulataldazharov](https://github.com/dulataldazharov) Aldazharov
+* Temirzhan [@ironsoul0](https://github.com/ironsoul0) Yussupov
