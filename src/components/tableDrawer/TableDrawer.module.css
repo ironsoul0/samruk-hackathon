@@ -9,6 +9,7 @@
   z-index: 1;
   background: white;
   padding: 10px 30px;
+  overflow: auto;
 }
 
 .visibleDrawer {
@@ -59,9 +60,12 @@
   background-color: #f3f3f3;
 }
 
+.root > p {
+  margin-bottom: 30px;
+}
+
 @media screen and (max-width: 768px) {
   .root {
     width: 70%;
-    overflow: auto;
   }
 }

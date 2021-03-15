@@ -35,7 +35,7 @@ function TableDrawer({ route, show, toggleDrawer }) {
             ))}
           </tbody>
         </table>
-        Количество оставшихся билетов: {totalTickets}
+        <p>Количество оставшихся билетов: {totalTickets}</p>
       </div>
       <div
         className={clsx([styles.backdrop, show && styles.visibleBackdrop])}
